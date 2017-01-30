@@ -1,103 +1,137 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as path from 'path';
-
 import axios from 'axios';
 var escape = require('markdown-escape')
 
+// The commands have been defined in the package.json file
+
 // this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated 
+    var userEmail;
+    var userPassword;
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-        // The code you place here will be executed every time your command is executed
-
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+    // Login with InnoFlow account
+    let login = vscode.commands.registerCommand('extension.login', () => {
+        vscode.window.showInputBox({prompt: 'Please enter your InnoFlow email:'})
+            .then(val => {
+                userEmail = val;
+                vscode.window.showInputBox({prompt: 'Please enter your password:'})
+                    .then(val => {
+                        userPassword = val;
+                    });
+            });
     });
 
+    // Submit correct tab to InnoFlow server
+    let submit = vscode.commands.registerCommand('extension.submit', () => {
 
-    let disposable2 = vscode.commands.registerCommand('extension.ctest', () => {
-
-        let alreadyOpenedFirstMarkdown = false;
-    let markdown_preview_command_id = "";
-    let close_other_editor_command_id = "";
-    if (vscode.version < "1.3.0") {
-        close_other_editor_command_id = "workbench.action.closeOtherEditors";
-        markdown_preview_command_id = "workbench.action.markdown.openPreviewSideBySide";
-    } else {
-        close_other_editor_command_id = "workbench.action.closeEditorsInOtherGroups";
-        markdown_preview_command_id = "markdown.showPreviewToSide";
-    }  
-        // The code you place here will be executed every time your command is executed 
+        // Check if there is active tab
         var editor = vscode.window.activeTextEditor;
         if (!editor) {
+            vscode.window.showInformationMessage('No active text editor');
             return; // No open text editor
         }
-
         var doc = editor.document;
-        //doc.languageId = "markdown";
-        var selections = editor.selections;
-        var txts: string[] = [];
-        for (let selection of selections) {
-            var text = editor.document.getText(selection);
-            txts.push(text);
-            console.log(text); // 1, "string", false
-        } 
-        const newFile = vscode.Uri.parse('untitled:' + path.join(vscode.workspace.rootPath, 'safsa.md'));
 
-        vscode.workspace.openTextDocument(newFile).then((textDocument) => {
-            if (!textDocument) {
-                console.log('Could not open file!');
-                return;
-            }
-            vscode.window.showTextDocument(textDocument).then((editor) => {
-                if (!editor) {
-                    console.log('Could not show document!');
+        // Check if user logged in with InnoFlow acount
+        if (!userEmail || !userPassword) {
+            vscode.window.showInformationMessage('Please login with InnoFlow account (Default shortcut: shift+cmd+l on Mac, shift+window+l on Window)');
+            return;
+        }
+
+        // Allow user to cancel submission
+        vscode.window.showQuickPick(['Submit Code/Comment','Cancel'])
+            .then(val => {
+                if (val != 'Cancel') {
+                    var data = JSON.stringify({
+                        email : userEmail,
+                        password : userPassword,
+                        code : doc.getText()
+                    });
+
+                    vscode.window.showInformationMessage('Submitting Code/Comment');
+                    require('./httpsConnection/httpsRequest.js')(data);
+                } else {
+                    vscode.window.showInformationMessage('Code/Comment submission cancelled');
                     return;
                 }
-                editor.edit(edit => {
-                    var lng = doc.languageId;
-                    console.log(lng);
-                    var prefix = "";
-                    if (lng != "plaintext"){
-                        prefix = lng;
-                    }
-                    editor = vscode.window.activeTextEditor;
-                    doc = editor.document; 
+            })
+    });
 
-        vscode.commands.executeCommand(close_other_editor_command_id)
-        .then(() => vscode.commands.executeCommand(markdown_preview_command_id))
-        .then(() => {}, (e) => console.error(e));
-    
-                    console.log(doc.getText().length);
-                    edit.delete(new vscode.Range(0, 0, doc.getText().length, 0));
-                    var newstring = "";
-                    for (let txt of txts) {
-                        var count = 4+(txt.match(/`/g) || []).length; //logs 3
-     
-                        var backticks = Array(count).join("`") 
-                        newstring += backticks+prefix+"\n" + txt + "\n"+backticks+"\n\nwrite your comments here\n\n";
+
+    let highlight = vscode.commands.registerCommand('extension.highlight', () => {
+
+        let alreadyOpenedFirstMarkdown = false;
+        let markdown_preview_command_id = "";
+        let close_other_editor_command_id = "";
+        if (vscode.version < "1.3.0") {
+            close_other_editor_command_id = "workbench.action.closeOtherEditors";
+            markdown_preview_command_id = "workbench.action.markdown.openPreviewSideBySide";
+        } else {
+            close_other_editor_command_id = "workbench.action.closeEditorsInOtherGroups";
+            markdown_preview_command_id = "markdown.showPreviewToSide";
+        }  
+            var editor = vscode.window.activeTextEditor;
+            if (!editor) {
+                return; // No open text editor
+            }
+
+            var doc = editor.document;
+            var selections = editor.selections;
+            var txts: string[] = [];
+            for (let selection of selections) {
+                var text = editor.document.getText(selection);
+                txts.push(text);
+                console.log(text);
+            }
+            const newFile = vscode.Uri.parse('untitled:' + path.join(vscode.workspace.rootPath, 'highlight.md'));
+
+            vscode.workspace.openTextDocument(newFile).then((textDocument) => {
+                if (!textDocument) {
+                    console.log('Could not open file!');
+                    return;
+                }
+                vscode.window.showTextDocument(textDocument).then((editor) => {
+                    if (!editor) {
+                        console.log('Could not show document!');
+                        return;
                     }
-                    edit.insert(new vscode.Position(0, 0), newstring);
+                    editor.edit(edit => {
+                        var lng = doc.languageId;
+                        console.log(lng);
+                        var prefix = "";
+                        if (lng != "plaintext"){
+                            prefix = lng;
+                        }
+                        editor = vscode.window.activeTextEditor;
+                        doc = editor.document; 
+
+            vscode.commands.executeCommand(close_other_editor_command_id)
+            .then(() => vscode.commands.executeCommand(markdown_preview_command_id))
+            .then(() => {}, (e) => console.error(e));
+        
+                        console.log(doc.getText().length);
+                        edit.delete(new vscode.Range(0, 0, doc.getText().length, 0));
+                        var newstring = "";
+                        for (let txt of txts) {
+                            var count = 4+(txt.match(/`/g) || []).length; //logs 3
+        
+                            var backticks = Array(count).join("`") 
+                            newstring += backticks+prefix+"\n" + txt + "\n"+backticks+"\n\nwrite your comments here\n\n";
+                        }
+                        edit.insert(new vscode.Position(0, 0), newstring);
+                    });
                 });
-                //       deferred.resolve(editor);
             });
         });
-        // Display a message box to the user 
-    });
-    context.subscriptions.push(disposable);
-    context.subscriptions.push(disposable2);
+    context.subscriptions.push(login);
+    context.subscriptions.push(submit);
+    context.subscriptions.push(highlight);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {
+
 }

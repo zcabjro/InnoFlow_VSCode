@@ -11,18 +11,23 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello",
-        "onCommand:extension.ctest"
+        "onCommand:extension.submit",
+        "onCommand:extension.highlight",
+        "onCommand:extension.login"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "commands": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
+            "command": "extension.submit",
+            "title": "submit"
         },
         {
-            "command": "extension.ctest",
-            "title": "stest"
+            "command": "extension.highlight",
+            "title": "highlight"
+        },
+        {
+            "command": "extension.login",
+            "title": "login"
         }]
     },
     "scripts": {
@@ -36,17 +41,28 @@
         "vscode": "^1.0.0",
         "mocha": "^2.3.3",
         "@types/node": "^6.0.40",
-        "@types/mocha": "^2.2.32"
+        "@types/mocha": "^2.2.32",
+        "https": "latest",
+        "axios": "^0.15.3",
+        "escape-markdown": "^1.0.0",
+        "follow-redirects": "^1.0.0",
+        "markdown-escape": "^1.0.0",
+        "path": "^0.12.7",
+        "process": "^0.11.9"
     },
     "contributes": {
         "keybindings": [
             {
                 "key": "shift+cmd+h",
-                "command": "extension.sayHello"
+                "command": "extension.submit"
             },
             {
                 "key": "shift+cmd+b",
-                "command": "extension.ctest"
+                "command": "extension.highlight"
+            },
+            {
+                "key": "shift+cmd+l",
+                "command": "extension.login"
             }
         ]
     }

@@ -1,7 +1,9 @@
 # Change Log
-All notable changes to the "stest" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+All notable changes to the "InnoFlow" extension will be documented in this file.
 
 ## [Unreleased]
-- Initial release
+
+## [0.0.1] - 30/01/2017
+### Added
+- Integrated with Https Requests @ AlvinLawKL
+- Updated package.json @ AlvinLawKL
