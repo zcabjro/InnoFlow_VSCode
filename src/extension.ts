@@ -86,6 +86,10 @@ export function activate(context: vscode.ExtensionContext) {
                 txts.push(text);
                 console.log(text);
             }
+            if  (vscode.workspace.rootPath === undefined) {
+                vscode.window.showInformationMessage('Please open a folder first.');
+            return;
+            } 
             const newFile = vscode.Uri.parse('untitled:' + path.join(vscode.workspace.rootPath, 'highlight.md'));
 
             vscode.workspace.openTextDocument(newFile).then((textDocument) => {
