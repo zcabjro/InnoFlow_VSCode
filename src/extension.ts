@@ -20,7 +20,6 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.window.showInputBox({prompt: 'Please enter your password:'})
                     .then(val => {
                         userPassword = Buffer.from(val,'base64');
-                        console.log(userEmail + ',' + userPassword);
                     });
             });
     });
