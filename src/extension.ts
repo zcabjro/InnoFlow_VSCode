@@ -16,10 +16,11 @@ export function activate(context: vscode.ExtensionContext) {
     let login = vscode.commands.registerCommand('extension.login', () => {
         vscode.window.showInputBox({prompt: 'Please enter your InnoFlow email:'})
             .then(val => {
-                userEmail = val;
+                userEmail = Buffer.from(val,'base64');
                 vscode.window.showInputBox({prompt: 'Please enter your password:'})
                     .then(val => {
-                        userPassword = val;
+                        userPassword = Buffer.from(val,'base64');
+                        console.log(userEmail + ',' + userPassword);
                     });
             });
     });
@@ -48,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
                     var data = JSON.stringify({
                         email : userEmail,
                         password : userPassword,
-                        code : doc.getText()
+                        code : Buffer.from(doc.getText(),'base64');
                     });
 
                     vscode.window.showInformationMessage('Submitting Code/Comment');
