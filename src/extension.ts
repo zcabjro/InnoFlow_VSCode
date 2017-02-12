@@ -2,18 +2,19 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import axios from 'axios';
+import * as tmp from 'tmp';
 var escape = require('markdown-escape')
 
+
+var userEmail;
+var userPassword; 
 // The commands have been defined in the package.json file
-
-// this method is called when your extension is activated
-export function activate(context: vscode.ExtensionContext) {
-
-    var userEmail;
-    var userPassword;
-
-    // Login with InnoFlow account
-    let login = vscode.commands.registerCommand('extension.login', () => {
+function login(a=null, b=null){  
+    if (a !== null && b !== null){
+        userEmail = a;
+        userPassword = b;
+    }
+    else{
         vscode.window.showInputBox({prompt: 'Please enter your InnoFlow email:'})
             .then(val => {
                 userEmail = Buffer.from(val).toString('base64');
@@ -21,24 +22,25 @@ export function activate(context: vscode.ExtensionContext) {
                     .then(val => {
                         userPassword = Buffer.from(val).toString('base64');
                     });
-            });
-    });
+            }); 
+    }
+    return true;
+}
 
-    // Submit correct tab to InnoFlow server
-    let submit = vscode.commands.registerCommand('extension.submit', () => {
+function submit(){
 
         // Check if there is active tab
         var editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showInformationMessage('No active text editor');
-            return; // No open text editor
+            console.log('No active text editor');  // No open text editor
         }
         var doc = editor.document;
 
         // Check if user logged in with InnoFlow acount
         if (!userEmail || !userPassword) {
             vscode.window.showInformationMessage('Please login with InnoFlow account (Default shortcut: shift+cmd+l on Mac, shift+window+l on Window)');
-            return;
+            console.log('Please login with InnoFlow account'); 
         }
 
         // Allow user to cancel submission
@@ -55,13 +57,13 @@ export function activate(context: vscode.ExtensionContext) {
                     require('./httpsConnection/httpsRequest.js')(data);
                 } else {
                     vscode.window.showInformationMessage('Code/Comment submission cancelled');
-                    return;
+                    console.log('Code/Comment submission cancelled');
                 }
             })
-    });
+            return true;
+    }
 
-
-    let highlight = vscode.commands.registerCommand('extension.highlight', () => {
+function highlight(){    
 
         let alreadyOpenedFirstMarkdown = false;
         let markdown_preview_command_id = "";
@@ -75,7 +77,7 @@ export function activate(context: vscode.ExtensionContext) {
         }  
             var editor = vscode.window.activeTextEditor;
             if (!editor) {
-                return; // No open text editor
+                console.log( 'No active text editor'); // No open text editor
             }
 
             var doc = editor.document;
@@ -86,21 +88,27 @@ export function activate(context: vscode.ExtensionContext) {
                 txts.push(text);
                 console.log(text);
             }
+            var newFile;
             if  (vscode.workspace.rootPath === undefined) {
                 vscode.window.showInformationMessage('Please open a folder first.');
-            return;
+                console.log('Please open a folder first.');  
+		        let dir = tmp.dirSync(); 
+                var testpath = dir.name;  
+                newFile = vscode.Uri.parse('untitled:' + path.join(testpath,'highlight.md'));
+
             } 
-            const newFile = vscode.Uri.parse('untitled:' + path.join(vscode.workspace.rootPath, 'highlight.md'));
+            else{
+              newFile = vscode.Uri.parse('untitled:' + path.join(vscode.workspace.rootPath, 'highlight.md'));
+
+            }
 
             vscode.workspace.openTextDocument(newFile).then((textDocument) => {
                 if (!textDocument) {
-                    console.log('Could not open file!');
-                    return;
+                    console.log('Could not open file!'); 
                 }
                 vscode.window.showTextDocument(textDocument).then((editor) => {
                     if (!editor) {
-                        console.log('Could not show document!');
-                        return;
+                        console.log('Could not show document!'); 
                     }
                     editor.edit(edit => {
                         var lng = doc.languageId;
@@ -129,10 +137,22 @@ export function activate(context: vscode.ExtensionContext) {
                     });
                 });
             });
-        });
-    context.subscriptions.push(login);
-    context.subscriptions.push(submit);
-    context.subscriptions.push(highlight);
+            return true;
+        }
+
+// this method is called when your extension is activated
+export function activate(context: vscode.ExtensionContext) { 
+    // Login with InnoFlow account
+    let disposablelogin = vscode.commands.registerCommand('extension.login',login);
+
+    // Submit correct tab to InnoFlow server
+    let disposablesubmit = vscode.commands.registerCommand('extension.submit',  submit);
+
+    let disposablehighlight = vscode.commands.registerCommand('extension.highlight', highlight);
+    context.subscriptions.push(disposablelogin);
+    context.subscriptions.push(disposablesubmit);
+    context.subscriptions.push(disposablehighlight);
+    return true;
 }
 
 // this method is called when your extension is deactivated
