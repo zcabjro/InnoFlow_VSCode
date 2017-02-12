@@ -34,6 +34,7 @@ function submit(){
         if (!editor) {
             vscode.window.showInformationMessage('No active text editor');
             console.log('No active text editor');  // No open text editor
+            return;
         }
         var doc = editor.document;
 
@@ -41,6 +42,7 @@ function submit(){
         if (!userEmail || !userPassword) {
             vscode.window.showInformationMessage('Please login with InnoFlow account (Default shortcut: shift+cmd+l on Mac, shift+window+l on Window)');
             console.log('Please login with InnoFlow account'); 
+            return;
         }
 
         // Allow user to cancel submission
@@ -58,6 +60,7 @@ function submit(){
                 } else {
                     vscode.window.showInformationMessage('Code/Comment submission cancelled');
                     console.log('Code/Comment submission cancelled');
+                    return;
                 }
             })
             return true;
@@ -78,6 +81,7 @@ function highlight(){
             var editor = vscode.window.activeTextEditor;
             if (!editor) {
                 console.log( 'No active text editor'); // No open text editor
+                return;
             }
 
             var doc = editor.document;
@@ -105,10 +109,12 @@ function highlight(){
             vscode.workspace.openTextDocument(newFile).then((textDocument) => {
                 if (!textDocument) {
                     console.log('Could not open file!'); 
+                    return;
                 }
                 vscode.window.showTextDocument(textDocument).then((editor) => {
                     if (!editor) {
                         console.log('Could not show document!'); 
+                        return;
                     }
                     editor.edit(edit => {
                         var lng = doc.languageId;
