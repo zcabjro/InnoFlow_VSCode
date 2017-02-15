@@ -14,6 +14,7 @@ module.exports = function(data,callback) {
 
     var req = https.request(options, function(res) {
         res.setEncoding('utf8');
+        callback(res.statusCode);
         if (res.statusCode == 200) {
             vscode.window.showInformationMessage('Code sucessfully submitted to ' + options.path);
         } else {
@@ -21,7 +22,6 @@ module.exports = function(data,callback) {
                vscode.window.showInformationMessage('Failed to submit code. Error:' + chunk);
             });
         }
-    });
-
+    }); 
     req.end(data);
 }

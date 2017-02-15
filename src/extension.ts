@@ -56,7 +56,11 @@ function submit(){
                     });
 
                     vscode.window.showInformationMessage('Submitting Code/Comment');
-                    require('./httpsConnection/httpsRequest.js')(data);
+                    var httpsRequest = require('./httpsConnection/httpsRequest.js');
+                    httpsRequest(data, function(statusCode) {
+   // console.log("status code:");
+   // console.log(statusCode);
+});
                 } else {
                     vscode.window.showInformationMessage('Code/Comment submission cancelled');
                     console.log('Code/Comment submission cancelled');

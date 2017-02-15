@@ -106,6 +106,23 @@ suite("Extension Function Tests", () => {
 
         assert.ok(await vscode.commands.executeCommand('extension.submit')); 
     });
+
+    test("API calls to server should return status code 200", function (done) {
+        var data = JSON.stringify({
+                        email : "userEmail",
+                        password : "userPassword",
+                        code : Buffer.from("doc.getText()").toString('base64')
+                    }); 
+        var httpsRequest = require('../src/httpsConnection/httpsRequest.js'); 
+        httpsRequest(data, function(statusCode) {
+            console.log("statuscode:");
+            console.log(statusCode);
+    assert.equal(statusCode, 200);
+    done();
+}); 
+
+
+});
     // Defines a Mocha unit test
     /*
     test('Open Preview Side By Side', async () => {
