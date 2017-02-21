@@ -17,10 +17,10 @@ function login(a=null, b=null){
     else{
         vscode.window.showInputBox({prompt: 'Please enter your InnoFlow email:'})
             .then(val => {
-                userEmail = Buffer.from(val).toString('base64');
+                userEmail = val;
                 vscode.window.showInputBox({prompt: 'Please enter your password:'})
                     .then(val => {
-                        userPassword = Buffer.from(val).toString('base64');
+                        userPassword = val;
                     });
             }); 
     }
