@@ -128,8 +128,7 @@ function highlight(){
                             prefix = lng;
                         }
                         editor = vscode.window.activeTextEditor;
-                        doc = editor.document; 
-
+                        doc = editor.document;          
             vscode.commands.executeCommand(close_other_editor_command_id)
             .then(() => vscode.commands.executeCommand(markdown_preview_command_id))
             .then(() => {}, (e) => console.error(e));

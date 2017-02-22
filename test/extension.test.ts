@@ -94,7 +94,7 @@ suite("Extension Function Tests", () => {
     }); 
     test("should call login without errors",  async ( ) => {
   
-        assert.ok(await vscode.commands.executeCommand('extension.login', "a", "b")); 
+        assert.ok(await vscode.commands.executeCommand('extension.login', "jack@gmail.com", "1234567890")); 
  
     });
     test("should call highlight without errors", async ( ) => { 
@@ -109,8 +109,8 @@ suite("Extension Function Tests", () => {
 
     test("API calls to server should return status code 200", function (done) {
         var data = JSON.stringify({
-                        email : "userEmail",
-                        password : "userPassword",
+                        email : "jack@gmail.com",
+                        password : "1234567890",
                         code : Buffer.from("doc.getText()").toString('base64')
                     }); 
         var httpsRequest = require('../src/httpsConnection/httpsRequest.js'); 

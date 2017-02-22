@@ -5,7 +5,7 @@ module.exports = function(data,callback) {
     var options = {
         host: 'innoflow.herokuapp.com',
         port: 443,
-        path: '/api/innovation',
+        path: '/api/innovations',
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
