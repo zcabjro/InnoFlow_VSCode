@@ -1,6 +1,6 @@
 # InnoFlow README
 
-This is the README for your extension "InnoFlow".
+This is the README for the Innoflow VSCode extension.
 
 ## Features
 
@@ -8,7 +8,6 @@ This is the README for your extension "InnoFlow".
 - Upload code to InnoFlow server
 
 ## Requirements
-
 
 ## Extension Settings
 
