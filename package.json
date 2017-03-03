@@ -1,9 +1,9 @@
 {
-  "name": "stest",
-  "displayName": "stest",
-  "description": "serverside communication test",
+  "name": "Innoflow_VSCode",
+  "displayName": "Innoflow VSCode",
+  "description": "Innoflow Extension For VSCode",
   "version": "0.0.2",
-  "publisher": "f",
+  "publisher": "UCLTeam3",
   "engines": {
     "vscode": "^1.5.0"
   },
