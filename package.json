@@ -1,71 +1,72 @@
 {
-  "name": "InnoflowVSCode",
-  "displayName": "Innoflow VSCode",
-  "description": "Innoflow Extension For VSCode",
-  "version": "0.0.2",
-  "publisher": "UCLTeam3",
-  "engines": {
-    "vscode": "^1.5.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:extension.submit",
-    "onCommand:extension.highlight",
-    "onCommand:extension.login"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "keybindings": [
-      {
-        "key": "shift+cmd+h",
-        "command": "extension.submit"
-      },
-      {
-        "key": "shift+cmd+b",
-        "command": "extension.highlight"
-      },
-      {
-        "key": "shift+cmd+l",
-        "command": "extension.login"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
-    "mocha": "^2.3.3",
-    "@types/node": "^6.0.40",
-    "@types/mocha": "^2.2.32",
-    "https": "latest",
-    "axios": "^0.15.3",
-    "escape-markdown": "^1.0.0",
-    "follow-redirects": "^1.0.0",
-    "markdown-escape": "^1.0.0",
-    "path": "^0.12.7",
-    "process": "^0.11.9"
-  },
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {
-    "tmp": "^0.0.31"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zcabjro/InnoFlow_VSCode.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/zcabjro/InnoFlow_VSCode/issues"
-  },
-  "homepage": "https://github.com/zcabjro/InnoFlow_VSCode#readme"
+    "name": "InnoflowVSCode",
+    "displayName": "Innoflow VSCode",
+    "description": "Innoflow Extension For VSCode",
+    "version": "0.0.6",
+    "publisher": "UCLTeam3",
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.submit",
+        "onCommand:extension.highlight",
+        "onCommand:extension.login"
+    ],
+    "main": "./out/src/extension",
+    "contributes": {
+        "keybindings": [
+            {
+                "key": "shift+cmd+h",
+                "command": "extension.submit"
+            },
+            {
+                "key": "shift+cmd+b",
+                "command": "extension.highlight"
+            },
+            {
+                "key": "shift+cmd+l",
+                "command": "extension.login"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "tsc -p ./",
+        "compile": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "typescript": "^2.0.3",
+        "vscode": "^1.0.0",
+        "mocha": "^2.3.3",
+        "mockery": "^1.0.0",
+        "@types/node": "^6.0.40",
+        "@types/mocha": "^2.2.32"
+    },
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "tmp": "^0.0.31",
+        "https": "latest",
+        "axios": "^0.15.3",
+        "escape-markdown": "^1.0.0",
+        "follow-redirects": "^1.0.0",
+        "markdown-escape": "^1.0.0",
+        "path": "^0.12.7",
+        "process": "^0.11.9"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/zcabjro/InnoFlow_VSCode.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/zcabjro/InnoFlow_VSCode/issues"
+    },
+    "homepage": "https://github.com/zcabjro/InnoFlow_VSCode#readme"
 }
