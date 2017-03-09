@@ -25,7 +25,7 @@ The extension works with the following command keys:
 ![Alt text](screenshots/userEmail.png "Ask for user email")
 ![Alt text](screenshots/userPassword.png "Ask for user password")
 * Open new tab with selected code and allow user to comment: `shift+cmd+b` on Mac, `shift+window+b` on Window
-![Alt text](screenshots/HighlighAndCommit.png "Highlight code and commit")
+![Alt text](screenshots/HighlightAndCommit.png "Highlight code and commit")
 * Submit current selected tab to InnoFlow server: `shift+cmd+h` on Mac, `shift+window+h` on Window
 ![Alt text](screenshots/Submit.png "Submit highlight to InnoFlow")
 
