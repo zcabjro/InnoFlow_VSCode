@@ -17,7 +17,7 @@ InnoFlow IDE Extension allows users to upload their work to InnoFlow through Vis
 
 * Vistual Studio Code installed
 
-## Extension Settings
+## Usage
 
 The extension works with the following command keys:
 
